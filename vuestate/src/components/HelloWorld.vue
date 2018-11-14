@@ -5,10 +5,11 @@
       <p>Todo List Using Vuex</p>
       <div class="columns customWidth" >
         <div class="column is-11">
-          <b-input placeholder="AddItem" v-model="todo" rounded></b-input> 
+          <!-- <b-input placeholder="AddItem" v-model="todo" rounded></b-input>  -->
+          <b-input placeholder="AddItem" v-model="message" rounded></b-input> 
         </div>
         <div class="column">
-          <button class="button is-success is-rounded" @click="addItem" > add </button>
+          <button class="button is-success is-rounded" @click="addTodo" > add </button>
         </div>
       </div>
        
@@ -39,15 +40,15 @@
             </b-checkbox>
           </td>
           <td>
-            {{ item.item }}
+            {{ item.arrtodo }}
           </td>
           <td>
             <!-- <a @click="editThis(index, item, item.sno)" class="button is-success is-small">Edit</a> -->
-            <span class="mdi mdi-square-edit-outline" @click="editThis(index, item, item.sno)" ></span>
+            <span class="mdi mdi-square-edit-outline" @click="editThis(index, item.arrtodo, item.sno)" ></span>
           </td>
           <td>
             <!-- <a @click="delThis(index)" class="button is-danger is-small">Delete</a> -->
-            <span class="mdi delete" @click="delThis(index)" ></span>
+            <span class="mdi delete" @click="delThis(item.sno)" ></span>
           </td>
         </tr>
       </tbody>
@@ -56,54 +57,90 @@
 </template>
 
 <script>
-//buefy css files
 import Vue from "vue";
 import Buefy from "buefy";
 import "buefy/dist/buefy.css";
-// import VueLodash from 'vue-lodash'
-// Vue.use(VueLodash)
 Vue.use(Buefy);
-// buefy css files
 
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapState } from "vuex";
 export default {
   name: "HelloWorld",
-  data() {
-    return {
-      todo: null,
-      editIndex: null,
-      active: false,
-      arrIndex: 0,
-      sno: null
-    };
-  },
+  //data() moved to store.js & being called in computed property
   computed: {
+    //****** mapGetters used to display array elements *******/
     ...mapGetters({ showTodo: "showTodoStore" }),
+    //**** v-model = 'message' ****/
+    message: {
+      set: function(val) {
+        this.$store.commit("updateMessage", val);
+      },
+      get: function() {
+        // eslint-disable-next-line
+        // console.log(this.$store.state.store.addTodo.message);
+        return this.$store.state.store.addTodo.message;
+      }
+    },
+    active: {
+      set: function(val) {
+        this.$store.commit("updateactive", val);
+      },
+      get: function() {
+        return this.$store.state.store.addTodo.active;
+      }
+    },
+    editIndex: {
+      set: function(val) {
+        this.$store.commit("updateIndex", val);
+      },
+      get: function() {
+        return this.$store.state.store.addTodo.editIndex;
+      }
+    },
+    arrIndex: {
+      set: function(val) {
+        this.$store.commit("updatearrIndex", val);
+      },
+      get: function() {
+        return this.$store.state.store.addTodo.arrIndex;
+      }
+    },
+    sno: {
+      set: function(val) {
+        this.$store.commit("updatesno", val);
+      },
+      get: function() {
+        return this.$store.state.store.addTodo.sno;
+      }
+    },
     listItems() {
-      // return _.orderBy(this.showTodo, 'sno', 'desc');
       return this.showTodo;
     }
   },
   methods: {
     ...mapActions(["add", "delete", "edit"]),
-    addItem: function() {
-      if (this.todo !== null && this.todo !== "" && this.editIndex == null) {
+    ...mapState(["addTodo"]),
+    addTodo: function() {
+      if (
+        this.message !== null &&
+        this.message !== "" &&
+        this.editIndex == null
+      ) {
         this.add({
-          key00: this.todo,
-          key01: this.active,
-          key02: this.arrIndex
+          arrtodo: this.$store.state.store.addTodo.message,
+          active: this.active,
+          sno: this.arrIndex
         });
         this.arrIndex += 1;
-        this.todo = null;
+        this.message = null;
       } else {
         this.edit({
-          key1: this.editIndex,
-          key2: this.todo,
-          key3: this.active,
-          key4: this.sno
+          editIndex: this.editIndex,
+          arrtodo: this.message,
+          active: this.active,
+          sno: this.sno
         }),
-          (this.editIndex = null),
-          (this.todo = null);
+          (this.editIndex = null);
+        this.message = null;
         this.sno = null;
       }
     },
@@ -111,21 +148,23 @@ export default {
       this.delete(index);
     },
     editThis: function(index, item, sno) {
+      // eslint-disable-next-line
       // console.log(index, item, sno)
       // need to send data as an object, when passing multiple values
       this.editIndex = index;
-      this.todo = item.item;
+      this.message = item;
       this.sno = sno;
-      // this.edit({'key1': index, 'key2': item})
     },
     checkboxAlert: function(active) {
-      // console.log(active,'checkbox alert')
       if (active == false) {
         this.$toast.open({
           message: "Well Done!!!",
           type: "is-success"
         });
       }
+    },
+    updateMessage(e) {
+      this.$store.commit("updateMessage", e.target.value);
     }
   }
 };

@@ -5,32 +5,52 @@ export default {
         //sorting key & order
         sort_by: 'sno',
         sort_desc: true,
+        //helloworld component data values
+        addTodo: {
+            message: "",
+            editIndex: null,
+            active: false,
+            arrIndex: 0,
+            sno: null,
+        }
     },
     mutations: {
-        addtodo: (state, item) => {
-            // console.log(item.key01)
-            state.todos.push({
-                'item': item.key00,
-                'active': item.key01,
-                'sno': item.key02
-            })
-            // console.log(state.todos)
+        addTodo: (state, item) => {
+            state.todos.push(item)
         },
         delItem: (state, index) => {
-            state.todos.splice(index, 1)
+            //eslint-disable-next-line
+            // console.log(index, 'from store mutations delItem')
+            state.todos.splice(state.todos.indexOf(index), 1)
         },
         editItem: (state, val) => {
-            // console.log(state.todos, val.key1, val.key2)
-            Vue.set(state.todos, val.key1, {
-                'item': val.key2,
-                'active': val.key3,
-                'sno': val.key4
+            Vue.set(state.todos, val.sno, {
+                'active': val.active,
+                'arrtodo': val.arrtodo,
+                'sno': val.sno
             })
-        }
+        },
+        updateMessage(state, msg) {
+            // eslint-disable-next-line
+            // console.log(msg,'from store mutations updateMessage')
+            state.addTodo.message = msg;
+        },
+        updateIndex(state, val) {
+            state.addTodo.editIndex = val;
+        },
+        updateactive(state, val) {
+            state.addTodo.active = val;
+        },
+        updatearrIndex(state, val) {
+            state.addTodo.arrIndex = val;
+        },
+        updatesno(state, val) {
+            state.addTodo.sno = val;
+        },
     },
     getters: {
         // showTodoStore: state => state.todos
-        // new function for sorting in desc order
+        // es6 sort function for sorting in desc order
         showTodoStore(state) {
             const todos = [...state.todos].sort((a, b) => {
                 if (a[state.sort_by] < b[state.sort_by]) {
@@ -42,27 +62,21 @@ export default {
                 return 0
             })
             if (!state.sort_desc) {
-                items.reverse()
+                todos.reverse()
             }
             return todos
         }
     },
     actions: {
-        add({
-            commit
-        }, payload) {
-            // console.log(payload)
-            commit('addtodo', payload)
+        add({commit}, payload) {
+            // eslint-disable-next-line
+            // console.log(payload,'store actions')
+            commit('addTodo', payload)
         },
-        delete({
-            commit
-        }, payload) {
+        delete({commit}, payload) {
             commit('delItem', payload)
         },
-        edit({
-            commit
-        }, payload) {
-            // console.log(payload)
+        edit({commit}, payload) {
             commit('editItem', payload)
         }
     }
