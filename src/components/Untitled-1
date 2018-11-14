@@ -1,0 +1,90 @@
+//when applications are very large, and components needs to interact with each other recursively
+
+
+const store = new Vuex.Store({
+    state: { //centralized data, every component can access it state basically is data, component has data vuex has state
+        // components needs to pull data from state
+    },
+    mutations: { // synchronous 
+
+    },
+    actions: { // asynchronous
+
+    },
+    getters: { //
+
+    }
+})
+
+
+
+
+
+
+
+
+
+// ############# vuex basic structure ##############
+
+<body>
+    <div id="app">
+        {{ welcome }}
+
+        <h1> {{ message }} </h1>
+
+        <h3> {{ count }} </h3>
+
+        <button @click="pressed" >Increase Counter</button>
+    </div>
+    <script>
+        const store = new Vuex.Store({
+            state: {
+                // data, vue instance, components goes here will be available throughout the applicaton
+                message: 'hello from VueX',
+                counter: 0,
+            },
+            mutations: { // synchronous
+                increment(state, payload) {
+                    state.counter += payload;
+                }
+
+            },
+            actions: { //asynchronous
+                increment (state, payload) {
+                    state.commit('increment',payload)
+                }
+            },
+            getters: {
+                message(state) {
+                    return state.message.toUpperCase();
+                },
+                counter(state){
+                    return state.counter;
+                }
+
+            }
+        })
+        var myapp = new Vue({
+            el:'#app',
+            data: function(){
+                return {
+                    welcome: 'okay we are learning VueX'
+                }
+            },
+            computed: {
+                message() {
+                    return store.getters.message;
+                },
+                count() {
+                    return store.getters.counter;
+                }
+            },
+            methods: {
+                pressed: function(){
+                    // store.commit('increment', 10);
+                    store.dispatch('increment', 20);
+                }
+            }
+        });
+    </script>
+  
