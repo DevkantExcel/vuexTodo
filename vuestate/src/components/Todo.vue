@@ -1,26 +1,21 @@
 <template>
    <div class="hello">
      <form @submit.prevent>
-       <!-- <input type="text" v-model="todo" >  #-->
       <p>Todo List Using Vuex</p>
-      <div class="columns customWidth" >
-        <div class="column is-11">
-          <!-- <b-input placeholder="AddItem" v-model="todo" rounded></b-input>  -->
-          <b-input placeholder="AddItem" v-model="message" rounded></b-input> 
-        </div>
-        <div class="column">
-          <button class="button is-success is-rounded" @click="addTodo" > add </button>
-        </div>
+      <!-- vuetify -->
+      <v-flex xs12 sm6 md3>
+          <v-text-field
+            v-model="message"
+            label="Solo"
+            placeholder="AddItem"
+            solo
+          ></v-text-field>
+      </v-flex>
+      <div class="text-xs-center">
+        <v-btn @click="addTodo" round color="primary" dark>Add</v-btn>
       </div>
        
      </form>
-       <!-- <ul>
-         <li v-for="(item, index) in showTodo" :key="index">
-           {{ item }}
-           <button @click="delThis(index)">Delete this</button>
-         </li>
-       </ul>  -->
- 
      <table v-show="showTodo.length" class="table customWidthTable is-hoverable">
        <thead>
          <tr>
@@ -43,11 +38,9 @@
             {{ item.arrtodo }}
           </td>
           <td>
-            <!-- <a @click="editThis(index, item, item.sno)" class="button is-success is-small">Edit</a> -->
             <span class="mdi mdi-square-edit-outline" @click="editThis(index, item.arrtodo, item.sno)" ></span>
           </td>
           <td>
-            <!-- <a @click="delThis(index)" class="button is-danger is-small">Delete</a> -->
             <span class="mdi delete" @click="delThis(item.sno)" ></span>
           </td>
         </tr>
@@ -57,26 +50,20 @@
 </template>
  <script>
 import Vue from "vue";
-import Buefy from "buefy";
-import "buefy/dist/buefy.css";
-Vue.use(Buefy);
 import { mapGetters, mapActions, mapState } from "vuex";
 export default {
-  name: "HelloWorld",
+  name: "Todo",
   //data() moved to store.js & being called in computed property
   computed: {
     //****** mapGetters used to display array elements *******/
-    ...mapGetters({ showTodo: "showTodoStore", addTodoH: "showaddTodo"}),
+    ...mapGetters({ showTodo: "showTodoStore", showaddTodo: "showaddTodo"}),
     //**** v-model = 'message' ****/
     message: {
       set: function(val) {
         this.$store.commit("updateMessage", val);
       },
       get: function() {
-        // eslint-disable-next-line
-        // console.log(this.$store.state.store.addTodo.message);
-        // return this.$store.state.store.addTodo.message; ->> shorten with addTodoH
-        return this.addTodoH.message;
+        return this.showaddTodo.message;
       }
     },
     active: {
@@ -84,7 +71,7 @@ export default {
         this.$store.commit("updateactive", val);
       },
       get: function() {
-        return this.addTodoH.active;
+        return this.showaddTodo.active;
       }
     },
     editIndex: {
@@ -92,7 +79,7 @@ export default {
         this.$store.commit("updateIndex", val);
       },
       get: function() {
-        return this.addTodoH.editIndex;
+        return this.showaddTodo.editIndex;
       }
     },
     arrIndex: {
@@ -100,7 +87,7 @@ export default {
         this.$store.commit("updatearrIndex", val);
       },
       get: function() {
-        return this.addTodoH.arrIndex;
+        return this.showaddTodo.arrIndex;
       }
     },
     sno: {
@@ -108,7 +95,7 @@ export default {
         this.$store.commit("updatesno", val);
       },
       get: function() {
-        return this.addTodoH.sno;
+        return this.showaddTodo.sno;
       }
     },
     listItems() {
@@ -125,7 +112,7 @@ export default {
         this.editIndex == null
       ) {
         this.add({
-          arrtodo: this.addTodoH.message,
+          arrtodo: this.showaddTodo.message,
           active: this.active,
           sno: this.arrIndex
         });
@@ -147,15 +134,12 @@ export default {
       this.delete(index);
     },
     editThis: function(index, item, sno) {
-      // eslint-disable-next-line
-      // console.log(index, item, sno)
       // need to send data as an object, when passing multiple values
       this.editIndex = index;
       this.message = item;
       this.sno = sno;
     },
     checkboxAlert: function(active) {
-      // console.log(active,'checkbox alert')
       if (active == false) {
         this.$toast.open({
           message: "Well Done!!!",

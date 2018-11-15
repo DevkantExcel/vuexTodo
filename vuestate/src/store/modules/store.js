@@ -19,8 +19,6 @@ export default {
             state.todos.push(item)
         },
         delItem: (state, index) => {
-            //eslint-disable-next-line
-            // console.log(index, 'from store mutations delItem')
             state.todos.splice(state.todos.indexOf(index), 1)
         },
         editItem: (state, val) => {
@@ -31,8 +29,6 @@ export default {
             })
         },
         updateMessage(state, msg) {
-            // eslint-disable-next-line
-            // console.log(msg,'from store mutations updateMessage')
             state.addTodo.message = msg;
         },
         updateIndex(state, val) {
@@ -49,7 +45,6 @@ export default {
         },
     },
     getters: {
-        // showTodoStore: state => state.todos
         // es6 sort function for sorting in desc order
         showTodoStore(state) {
             const todos = [...state.todos].sort((a, b) => {
@@ -71,8 +66,6 @@ export default {
     },
     actions: {
         add({commit}, payload) {
-            // eslint-disable-next-line
-            // console.log(payload,'store actions')
             commit('addTodo', payload)
         },
         delete({commit}, payload) {
