@@ -1,7 +1,7 @@
 <template>
-  <div class="hello">
-    <form @submit.prevent>
-      <!-- <input type="text" v-model="todo" >  #-->
+   <div class="hello">
+     <form @submit.prevent>
+       <!-- <input type="text" v-model="todo" >  #-->
       <p>Todo List Using Vuex</p>
       <div class="columns customWidth" >
         <div class="column is-11">
@@ -13,30 +13,30 @@
         </div>
       </div>
        
-    </form>
-      <!-- <ul>
-        <li v-for="(item, index) in showTodo" :key="index">
-          {{ item }}
-          <button @click="delThis(index)">Delete this</button>
-        </li>
-      </ul>  -->
-
-    <table v-show="showTodo.length" class="table customWidthTable is-hoverable">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Item</th>
-          <th>Edit</th>
-          <th>Delete</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(item, index) in listItems" :key="index" :class="{strike : item.active}" >
-          <td>
-            <b-checkbox 
-              type="checkbox is-success is-small" 
-              v-model="item.active" 
-              @change.native="checkboxAlert(item.active)">
+     </form>
+       <!-- <ul>
+         <li v-for="(item, index) in showTodo" :key="index">
+           {{ item }}
+           <button @click="delThis(index)">Delete this</button>
+         </li>
+       </ul>  -->
+ 
+     <table v-show="showTodo.length" class="table customWidthTable is-hoverable">
+       <thead>
+         <tr>
+           <th>#</th>
+           <th>Item</th>
+           <th>Edit</th>
+           <th>Delete</th>
+         </tr>
+       </thead>
+       <tbody>
+         <tr v-for="(item, index) in listItems" :key="index" :class="{strike : item.active}" >
+           <td>
+             <b-checkbox 
+               type="checkbox is-success is-small" 
+               v-model="item.active" 
+               @change.native="checkboxAlert(item.active)">
             </b-checkbox>
           </td>
           <td>
@@ -52,23 +52,21 @@
           </td>
         </tr>
       </tbody>
-    </table>
-  </div>
+     </table>
+   </div>
 </template>
-
-<script>
+ <script>
 import Vue from "vue";
 import Buefy from "buefy";
 import "buefy/dist/buefy.css";
 Vue.use(Buefy);
-
 import { mapGetters, mapActions, mapState } from "vuex";
 export default {
   name: "HelloWorld",
   //data() moved to store.js & being called in computed property
   computed: {
     //****** mapGetters used to display array elements *******/
-    ...mapGetters({ showTodo: "showTodoStore" }),
+    ...mapGetters({ showTodo: "showTodoStore", addTodoH: "showaddTodo"}),
     //**** v-model = 'message' ****/
     message: {
       set: function(val) {
@@ -77,7 +75,8 @@ export default {
       get: function() {
         // eslint-disable-next-line
         // console.log(this.$store.state.store.addTodo.message);
-        return this.$store.state.store.addTodo.message;
+        // return this.$store.state.store.addTodo.message; ->> shorten with addTodoH
+        return this.addTodoH.message;
       }
     },
     active: {
@@ -85,7 +84,7 @@ export default {
         this.$store.commit("updateactive", val);
       },
       get: function() {
-        return this.$store.state.store.addTodo.active;
+        return this.addTodoH.active;
       }
     },
     editIndex: {
@@ -93,7 +92,7 @@ export default {
         this.$store.commit("updateIndex", val);
       },
       get: function() {
-        return this.$store.state.store.addTodo.editIndex;
+        return this.addTodoH.editIndex;
       }
     },
     arrIndex: {
@@ -101,7 +100,7 @@ export default {
         this.$store.commit("updatearrIndex", val);
       },
       get: function() {
-        return this.$store.state.store.addTodo.arrIndex;
+        return this.addTodoH.arrIndex;
       }
     },
     sno: {
@@ -109,7 +108,7 @@ export default {
         this.$store.commit("updatesno", val);
       },
       get: function() {
-        return this.$store.state.store.addTodo.sno;
+        return this.addTodoH.sno;
       }
     },
     listItems() {
@@ -126,7 +125,7 @@ export default {
         this.editIndex == null
       ) {
         this.add({
-          arrtodo: this.$store.state.store.addTodo.message,
+          arrtodo: this.addTodoH.message,
           active: this.active,
           sno: this.arrIndex
         });
@@ -156,6 +155,7 @@ export default {
       this.sno = sno;
     },
     checkboxAlert: function(active) {
+      // console.log(active,'checkbox alert')
       if (active == false) {
         this.$toast.open({
           message: "Well Done!!!",
@@ -168,10 +168,10 @@ export default {
     }
   }
 };
-</script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+ </script>
+ 
+ <!-- Add "scoped" attribute to limit CSS to this component only -->
+ <style scoped>
 h3 {
   margin: 40px 0 0;
 }

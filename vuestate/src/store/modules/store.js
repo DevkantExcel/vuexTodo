@@ -65,7 +65,9 @@ export default {
                 todos.reverse()
             }
             return todos
-        }
+        },
+        //***** getters to shorten the string
+        showaddTodo: state => state.addTodo
     },
     actions: {
         add({commit}, payload) {
