@@ -12,6 +12,12 @@ export default {
             active: false,
             arrIndex: 0,
             sno: null,
+            //time picker
+            time: null,
+            menu2: false,
+            //date picker
+            date: new Date().toISOString().substr(0, 10),
+            menu: false,
         }
     },
     mutations: {
@@ -25,8 +31,17 @@ export default {
             Vue.set(state.todos, val.sno, {
                 'active': val.active,
                 'arrtodo': val.arrtodo,
-                'sno': val.sno
+                'sno': val.sno,
+                'time': val.time,
+                'date': val.date,
             })
+        },
+        checkBox: (state, val) => {
+            state.todos.forEach((value, index) => {
+                if (value.sno === val.sno) {
+                    state.todos[index].active = val.active
+                }
+            });
         },
         updateMessage(state, msg) {
             state.addTodo.message = msg;
@@ -43,6 +58,19 @@ export default {
         updatesno(state, val) {
             state.addTodo.sno = val;
         },
+        updateTime(state, val) {
+            state.addTodo.time = val;
+        },
+        updateMenu2(state, val) {
+            state.addTodo.menu2 = val;
+        },
+        updatedate(state, val) {
+            state.addTodo.date = val;
+        },
+        updatemenu(state, val) {
+            state.addTodo.menu = val;
+        },
+
     },
     getters: {
         // es6 sort function for sorting in desc order
@@ -73,6 +101,9 @@ export default {
         },
         edit({commit}, payload) {
             commit('editItem', payload)
-        }
+        },
+        checkbox({commit}, payload) { 
+            commit('checkBox', payload)
+        },
     }
 }
