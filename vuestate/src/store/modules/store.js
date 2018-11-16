@@ -7,15 +7,19 @@ export default {
         sort_desc: true,
         //helloworld component data values
         addTodo: {
+            // v-model for input type
             message: "",
+            //editIndex used to edit details 
             editIndex: null,
+            //active property using which css strikes the values
             active: false,
+            //arrIndex is a counter which increases sno in array
             arrIndex: 0,
             sno: null,
-            //time picker
+            //time picker v-model used by Vuetify Time picker
             time: null,
             menu2: false,
-            //date picker
+            //date picker v-model used by Vuetify Date picker
             date: new Date().toISOString().substr(0, 10),
             menu: false,
         }
