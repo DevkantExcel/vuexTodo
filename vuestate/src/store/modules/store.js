@@ -39,6 +39,8 @@ export default {
                 'time': val.time,
                 'date': val.date,
             })
+            //eslint-disable-next-line
+            console.log(val, 'store editItem');
         },
         checkBox: (state, val) => {
             state.todos.forEach((value, index) => {
@@ -97,16 +99,24 @@ export default {
         showaddTodo: state => state.addTodo
     },
     actions: {
-        add({commit}, payload) {
+        add({
+            commit
+        }, payload) {
             commit('addTodo', payload)
         },
-        delete({commit}, payload) {
+        delete({
+            commit
+        }, payload) {
             commit('delItem', payload)
         },
-        edit({commit}, payload) {
+        edit({
+            commit
+        }, payload) {
             commit('editItem', payload)
         },
-        checkbox({commit}, payload) { 
+        checkbox({
+            commit
+        }, payload) {
             commit('checkBox', payload)
         },
     }

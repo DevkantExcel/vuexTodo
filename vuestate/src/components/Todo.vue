@@ -259,7 +259,8 @@ export default {
     },
     editThis: function(index, item) {
       // need to send data as an object, when passing multiple values
-      this.editIndex = index;
+      // this.editIndex = index;
+      this.editIndex = item.sno;
       this.message = item.arrtodo;
       this.sno = item.sno;
       this.time = item.time;
