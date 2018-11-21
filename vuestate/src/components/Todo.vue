@@ -79,51 +79,8 @@
      <!-- </form> -->
      </v-layout>
       </v-container>
-
-      <v-container class="customWidthSeventy" >
-        <v-layout>
-     <table v-show="showTodo.length" class="center" fixed>
-       <thead>
-         <tr>
-           <th></th>
-           <th>Item</th>
-           <th>Date</th>
-           <th>Time</th>
-           <th>Edit</th>
-           <th>Delete</th>
-         </tr>
-       </thead>
-       <tbody>
-         <tr v-for="(item, index) in listItems" :key="index" >
-           <td>
-             <v-checkbox 
-               color="success"
-               type="checkbox is-success is-small" 
-               v-model="item.active" 
-               @click.native="checkboxAlert(item)">
-            </v-checkbox>
-          </td>
-          <td v-bind:class="{strike : item.active}" style="word-wrap: break-word;">
-            {{ item.arrtodo }}
-          </td>
-          <td v-bind:class="{strike : item.active}">
-            {{ item.date }}
-          </td>
-          <td v-bind:class="{strike : item.active}">
-            {{ item.time }}
-          </td>
-          <td>
-            <v-btn @click="editThis(index, item)" round color="primary" dark>Edit</v-btn>
-          </td>
-          <td>
-            <v-btn @click="delThis(item.sno)" round color="error" dark>Delete</v-btn>
-          </td>
-        </tr>
-      </tbody>
-     </table>
-     </v-layout>
-     </v-container>
-   
+      
+      <!-- table shifted to component TodoData -->
    </v-app>
 </template>
  <script>

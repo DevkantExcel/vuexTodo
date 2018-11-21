@@ -5,7 +5,7 @@ import store from './store'
 
 import VueRouter from 'vue-router'
 import Todo from './components/Todo.vue';
-import Form from './components/Form.vue';
+import TodoData from './components/TodoData.vue';
 
 Vue.use(VueRouter)
 
@@ -16,8 +16,8 @@ const routes = [{
     component: Todo,
   },
   {
-    path: "/Form",
-    component: Form,
+    path: "/TodoData",
+    component: TodoData,
   },
 ]
 const router = new VueRouter({
