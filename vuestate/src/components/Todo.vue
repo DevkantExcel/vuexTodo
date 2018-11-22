@@ -228,6 +228,34 @@ export default {
           alert("please fill all the details i.e, item,date & time");
         }
       }
+      if (this.editIndex !== null) {
+        if (
+          this.editIndex !== null &&
+          this.message !== null &&
+          this.message !== "" &&
+          this.time !== null &&
+          this.time !== "" &&
+          this.date !== null &&
+          this.date !== ""
+        ) {
+          this.edit({
+            editIndex: this.editIndex,
+            arrtodo: this.showaddTodo.message,
+            active: this.active,
+            sno: this.arrIndex,
+            time: this.time,
+            date: this.date
+          }),
+            (this.editIndex = null);
+          this.active = false;
+          this.message = null;
+          this.time = null;
+          this.date = null;
+          this.$router.push("/TodoData");
+        } else {
+          alert("please fill all the details i.e, item,date & time");
+        }
+      }
       // new logic ends
     },
     delThis: function(index) {
@@ -249,10 +277,11 @@ export default {
         sno: item.sno,
         date: item.date,
         time: item.time,
+        // editIndex: item.sno
         editIndex: index
       });
       // eslint-disable-next-line
-      Console.log(item, index, "from checkbox");
+      Console.log(item, index, 'from checkbox')
     },
     updateMessage(e) {
       this.$store.commit("updateMessage", e.target.value);

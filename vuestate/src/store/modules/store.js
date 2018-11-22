@@ -17,11 +17,7 @@ export default {
             arrIndex: 0,
             sno: null,
             //time picker v-model used by Vuetify Time picker
-            time: new Date().toLocaleTimeString('en-US', {
-                hour12: false,
-                hour: "numeric",
-                minute: "numeric"
-            }),
+            time: new Date().toLocaleTimeString('en-US', { hour12: false, hour: "numeric", minute: "numeric"}),
             menu2: false,
             //date picker v-model used by Vuetify Date picker
             date: new Date().toISOString().substr(0, 10),
