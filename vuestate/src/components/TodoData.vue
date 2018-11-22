@@ -1,7 +1,9 @@
 <template>
 <div>
    <v-container class="customWidthSeventy" >
-          <h1 class="center" >Your Todos</h1><hr>
+          <h1 class="center" >Your Todos</h1><br>
+          <h4 v-show="!showTodo.length" class="center" > <a><router-link to="/">ADD New</router-link></a></h4>
+          <h4 v-show="showTodo.length" class="center" > <a><router-link to="/">Click here to ADD more</router-link></a></h4><hr>
         <v-layout>
      <table v-show="showTodo.length" class="center" fixed>
        <thead>
@@ -21,11 +23,11 @@
                color="success"
                type="checkbox is-success is-small" 
                v-model="item.active" 
-               @click.native="checkboxAlert(item)">
+               @click.native="checkboxAlert(item, index)">
             </v-checkbox>
           </td>
           <td v-bind:class="{strike : item.active}" style="word-wrap: break-word;">
-            {{ item.arrtodo }}
+           {{ item.arrtodo }}
           </td>
           <td v-bind:class="{strike : item.active}">
             {{ item.date }}
@@ -37,7 +39,7 @@
             <v-btn @click="editThis(index, item)" round color="primary" dark>Edit</v-btn>
           </td>
           <td>
-            <v-btn @click="delThis(item.sno)" round color="error" dark>Delete</v-btn>
+            <v-btn @click="delThis(index)" round color="error" dark>Delete</v-btn>
           </td>
         </tr>
       </tbody>
@@ -49,6 +51,7 @@
 </template>
 
 <script>
+// eslint-disable-next-line
 import Vue from "vue";
 import { mapGetters, mapActions } from "vuex";
 export default {
@@ -57,12 +60,12 @@ export default {
     //****** mapGetters used to display array elements *******/
     ...mapGetters({ showTodo: "showTodoStore", showaddTodo: "showaddTodo" }),
     //**** v-model = 'message' ****/
-    active: {
+    message: {
       set: function(val) {
-        this.$store.commit("updateactive", val);
+        this.$store.commit("updateMessage", val);
       },
       get: function() {
-        return this.showaddTodo.active;
+        return this.showaddTodo.message;
       }
     },
     editIndex: {
@@ -81,6 +84,30 @@ export default {
         return this.showaddTodo.sno;
       }
     },
+    time: {
+      set: function(val) {
+        this.$store.commit("updateTime", val);
+      },
+      get: function() {
+        return this.showaddTodo.time;
+      }
+    },
+    date: {
+      set: function(val) {
+        this.$store.commit("updatedate", val);
+      },
+      get: function() {
+        return this.showaddTodo.date;
+      }
+    },
+    active: {
+      set: function(val) {
+        this.$store.commit("updateactive", val);
+      },
+      get: function() {
+        return this.showaddTodo.active;
+      }
+    },
     listItems() {
       return this.showTodo;
     }
@@ -92,12 +119,13 @@ export default {
     },
     editThis: function(index, item) {
       // need to send data as an object, when passing multiple values
-      // this.editIndex = index;
-      this.editIndex = item.sno;
+      this.editIndex = index;
+      this.active = item.active;
       this.message = item.arrtodo;
       this.sno = item.sno;
       this.time = item.time;
       this.date = item.date;
+      this.$router.push("/");
     },
     checkboxAlert: function(item) {
       this.checkbox({

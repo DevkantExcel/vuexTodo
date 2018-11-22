@@ -12,11 +12,11 @@ Vue.use(VueRouter)
 Vue.config.productionTip = false
 // code for router 
 const routes = [{
-    path: "/Todo",
+    path: "/",
     component: Todo,
   },
   {
-    path: "/TodoData",
+    path: "/YourTodo",
     component: TodoData,
   },
 ]
