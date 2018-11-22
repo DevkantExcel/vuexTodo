@@ -5,104 +5,65 @@ export default {
         //sorting key & order
         sort_by: 'sno',
         sort_desc: true,
-        //helloworld component data values
-        addTodo: {
-            // v-model for input type
-            message: "",
-            //editIndex used to edit details 
-            editIndex: null,
-            //active property using which css strikes the values
-            active: false,
-            //arrIndex is a counter which increases sno in array
-            arrIndex: 0,
-            sno: null,
-            //time picker v-model used by Vuetify Time picker
-            time: new Date().toLocaleTimeString('en-US', { hour12: false, hour: "numeric", minute: "numeric"}),
-            menu2: false,
-            //date picker v-model used by Vuetify Date picker
-            date: new Date().toISOString().substr(0, 10),
-            menu: false,
-        }
     },
     mutations: {
-        addTodo: (state, item) => {
-            state.todos.push(item)
+        addtodo: (state, item) => {
+            // console.log(item.key01)
+            state.todos.push({
+                'item': item.key00,
+                'active': item.key01,
+                'sno': item.key02
+            })
+            // console.log(state.todos)
         },
         delItem: (state, index) => {
-            state.todos.splice(state.todos.length - 1 - index, 1);
+            state.todos.splice(index, 1)
         },
         editItem: (state, val) => {
-            Vue.set(state.todos, (state.todos.length - 1 - val.editIndex), {
-                'active': val.active,
-                'arrtodo': val.arrtodo,
-                'date': val.date,
-                'sno': val.sno,
-                'time': val.time,
+            // console.log(state.todos, val.key1, val.key2)
+            Vue.set(state.todos, val.key1, {
+                'item': val.key2,
+                'active': val.key3,
+                'sno': val.key4
             })
-        },
-        checkBox: (state, val) => {
-            // state.todos.forEach((value, index) => {
-            //     if (value.sno === val.sno) {
-            //         state.todos[index].active = val.active
-            //     }
-            // });
-            Vue.set(state.todos, (state.todos.length - 1 - val.editIndex), {
-                'active': val.active,
-                'arrtodo': val.arrtodo,
-                'date': val.date,
-                'sno': val.sno,
-                'time': val.time,
-            })
-        },
-        updateMessage(state, msg) {
-            state.addTodo.message = msg;
-        },
-        updateIndex(state, val) {
-            state.addTodo.editIndex = val;
-        },
-        updateactive(state, val) {
-            state.addTodo.active = val;
-        },
-        updatearrIndex(state, val) {
-            state.addTodo.arrIndex = val;
-        },
-        updatesno(state, val) {
-            state.addTodo.sno = val;
-        },
-        updateTime(state, val) {
-            state.addTodo.time = val;
-        },
-        updateMenu2(state, val) {
-            state.addTodo.menu2 = val;
-        },
-        updatedate(state, val) {
-            state.addTodo.date = val;
-        },
-        updatemenu(state, val) {
-            state.addTodo.menu = val;
-        },
-
+        }
     },
     getters: {
-        // es6 sort function for sorting in desc order
+        // showTodoStore: state => state.todos
+        // new function for sorting in desc order
         showTodoStore(state) {
-            return state.todos.slice().reverse();
-        },
-        //***** getters to shorten the string
-        showaddTodo: state => state.addTodo
+            const todos = [...state.todos].sort((a, b) => {
+                if (a[state.sort_by] < b[state.sort_by]) {
+                    return 1
+                }
+                if (a[state.sort_by] > b[state.sort_by]) {
+                    return -1
+                }
+                return 0
+            })
+            if (!state.sort_desc) {
+                items.reverse()
+            }
+            return todos
+        }
     },
     actions: {
-        add({commit}, payload) {
-            commit('addTodo', payload)
+        add({
+            commit
+        }, payload) {
+            // console.log(payload)
+            commit('addtodo', payload)
         },
-        delete({commit}, payload) {
+        delete({
+            commit
+        }, payload) {
             commit('delItem', payload)
         },
-        edit({commit}, payload) {
+        edit({
+            commit
+        }, payload) {
+            // console.log(payload)
             commit('editItem', payload)
-        },
-        checkbox({commit}, payload) {
-            commit('checkBox', payload)
-        },
+        }
     }
 }
