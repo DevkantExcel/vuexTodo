@@ -173,13 +173,16 @@ export default {
     ...mapActions(["add", "delete", "edit", "checkbox"]),
     ...mapState(["addTodo"]),
     addTodo: function() {
+      // new logic
+
       if (this.editIndex == null) {
         if (
           this.message !== null &&
           this.message !== "" &&
-          this.editIndex == null &&
           this.time !== null &&
-          this.date !== null
+          this.time !== "" &&
+          this.date !== null &&
+          this.date !== ""
         ) {
           this.add({
             arrtodo: this.showaddTodo.message,
@@ -195,41 +198,61 @@ export default {
         } else {
           alert("please fill all the details i.e, item,date & time");
         }
-      } else {
-        this.edit({
-          editIndex: this.editIndex,
-          arrtodo: this.message,
-          active: this.active,
-          sno: this.sno,
-          time: this.time,
-          date: this.date
-        }),
-          (this.editIndex = null);
-        this.message = null;
-        this.sno = null;
-        this.time = null;
-        this.date = null;
       }
+      if (this.editIndex !== null) {
+        if (
+          this.editIndex !== null &&
+          this.message !== null &&
+          this.message !== "" &&
+          this.time !== null &&
+          this.time !== "" &&
+          this.date !== null &&
+          this.date !== ""
+        ) {
+          this.edit({
+            editIndex: this.editIndex,
+            arrtodo: this.showaddTodo.message,
+            active: this.active,
+            sno: this.arrIndex,
+            time: this.time,
+            date: this.date
+          }),
+            (this.editIndex = null);
+          this.active = false;
+          this.message = null;
+          this.time = null;
+          this.date = null;
+          this.$router.push("/TodoData");
+        } else {
+          alert("please fill all the details i.e, item,date & time");
+        }
+      }
+      // new logic ends
     },
     delThis: function(index) {
       this.delete(index);
     },
     editThis: function(index, item) {
       // need to send data as an object, when passing multiple values
-      // this.editIndex = index;
-      this.editIndex = item.sno;
+      this.editIndex = index;
+      this.active = item.active;
       this.message = item.arrtodo;
       this.sno = item.sno;
       this.time = item.time;
       this.date = item.date;
     },
-    checkboxAlert: function(item) {
+    checkboxAlert: function(item, index) {
       this.checkbox({
         active: item.active,
         arrtodo: item.arrtodo,
         sno: item.sno,
-        editIndex: item.sno
+        date: item.date,
+        time: item.time,
+        // editIndex: item.sno
+        editIndex: index
       });
+      // eslint-disable-next-line
+      Console.log(item, index, 'from checkbox')
     },
     updateMessage(e) {
       this.$store.commit("updateMessage", e.target.value);

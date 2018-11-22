@@ -17,7 +17,7 @@ export default {
             arrIndex: 0,
             sno: null,
             //time picker v-model used by Vuetify Time picker
-            time: null,
+            time: new Date().toLocaleTimeString('en-US', { hour12: false, hour: "numeric", minute: "numeric"}),
             menu2: false,
             //date picker v-model used by Vuetify Date picker
             date: new Date().toISOString().substr(0, 10),
@@ -29,25 +29,30 @@ export default {
             state.todos.push(item)
         },
         delItem: (state, index) => {
-            state.todos.splice(state.todos.indexOf(index), 1)
+            state.todos.splice(state.todos.length - 1 - index, 1);
         },
         editItem: (state, val) => {
-            Vue.set(state.todos, val.sno, {
+            Vue.set(state.todos, (state.todos.length - 1 - val.editIndex), {
                 'active': val.active,
                 'arrtodo': val.arrtodo,
+                'date': val.date,
                 'sno': val.sno,
                 'time': val.time,
-                'date': val.date,
             })
-            //eslint-disable-next-line
-            console.log(val, 'store editItem');
         },
         checkBox: (state, val) => {
-            state.todos.forEach((value, index) => {
-                if (value.sno === val.sno) {
-                    state.todos[index].active = val.active
-                }
-            });
+            // state.todos.forEach((value, index) => {
+            //     if (value.sno === val.sno) {
+            //         state.todos[index].active = val.active
+            //     }
+            // });
+            Vue.set(state.todos, (state.todos.length - 1 - val.editIndex), {
+                'active': val.active,
+                'arrtodo': val.arrtodo,
+                'date': val.date,
+                'sno': val.sno,
+                'time': val.time,
+            })
         },
         updateMessage(state, msg) {
             state.addTodo.message = msg;
@@ -81,42 +86,22 @@ export default {
     getters: {
         // es6 sort function for sorting in desc order
         showTodoStore(state) {
-            const todos = [...state.todos].sort((a, b) => {
-                if (a[state.sort_by] < b[state.sort_by]) {
-                    return 1
-                }
-                if (a[state.sort_by] > b[state.sort_by]) {
-                    return -1
-                }
-                return 0
-            })
-            if (!state.sort_desc) {
-                todos.reverse()
-            }
-            return todos
+            return state.todos.slice().reverse();
         },
         //***** getters to shorten the string
         showaddTodo: state => state.addTodo
     },
     actions: {
-        add({
-            commit
-        }, payload) {
+        add({commit}, payload) {
             commit('addTodo', payload)
         },
-        delete({
-            commit
-        }, payload) {
+        delete({commit}, payload) {
             commit('delItem', payload)
         },
-        edit({
-            commit
-        }, payload) {
+        edit({commit}, payload) {
             commit('editItem', payload)
         },
-        checkbox({
-            commit
-        }, payload) {
+        checkbox({commit}, payload) {
             commit('checkBox', payload)
         },
     }
