@@ -195,6 +195,35 @@ export default {
           this.message = null;
           this.time = null;
           this.date = null;
+          this.$router.push("/YourTodo");
+        } else {
+          alert("please fill all the details i.e, item,date & time");
+        }
+      }
+      if (this.editIndex !== null) {
+        if (
+          this.editIndex !== null &&
+          this.message !== null &&
+          this.message !== "" &&
+          this.time !== null &&
+          this.time !== "" &&
+          this.date !== null &&
+          this.date !== ""
+        ) {
+          this.edit({
+            editIndex: this.editIndex,
+            arrtodo: this.showaddTodo.message,
+            active: this.active,
+            sno: this.arrIndex,
+            time: this.time,
+            date: this.date
+          }),
+            (this.editIndex = null);
+          this.active = false;
+          this.message = null;
+          this.time = null;
+          this.date = null;
+          this.$router.push("/YourTodo");
         } else {
           alert("please fill all the details i.e, item,date & time");
         }

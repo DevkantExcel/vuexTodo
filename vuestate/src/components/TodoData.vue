@@ -1,7 +1,9 @@
 <template>
 <div>
    <v-container class="customWidthSeventy" >
-          <h1 class="center" >Your Todos</h1><hr>
+          <h1 class="center" >Your Todos</h1><br>
+          <h4 v-show="!showTodo.length" class="center" > <a><router-link to="/">ADD New</router-link></a></h4>
+          <h4 v-show="showTodo.length" class="center" > <a><router-link to="/">Click here to ADD more</router-link></a></h4><hr>
         <v-layout>
      <table v-show="showTodo.length" class="center" fixed>
        <thead>
@@ -123,7 +125,7 @@ export default {
       this.sno = item.sno;
       this.time = item.time;
       this.date = item.date;
-      this.$router.push("/Todo");
+      this.$router.push("/");
     },
     checkboxAlert: function(item) {
       this.checkbox({
