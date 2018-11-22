@@ -1,28 +1,35 @@
 <template>
-  <div id="app">
-    <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
-    <HelloWorld/>
-  </div>
+  <v-app>
+    <!-- navbar -->
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand"><router-link to="/">Home</router-link> <br /></a>
+        </div>
+      <ul class="nav navbar-nav">
+        <li><router-link to="/Todo">Todo Form</router-link> <br /> </li>
+        <li><router-link to="/TodoData">Todo Data</router-link> <br /> </li>
+      </ul>
+      </div>
+</nav>
+    <router-view></router-view>
+  </v-app>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
-
+import Todo from "./components/Todo.vue";
 export default {
-  name: "app",
-  components: {
-    HelloWorld
-  }
+  name: "App",
+  components: {}
 };
 </script>
-
 <style>
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.center {
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+}
+.application--wrap {
+  color: aliceblue;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  background-color: darkkhaki;
 }
 </style>
