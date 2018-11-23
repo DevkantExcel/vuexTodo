@@ -5,7 +5,6 @@ import store from './store'
 
 import VueRouter from 'vue-router'
 import Todo from './components/Todo.vue';
-import TodoData from './components/TodoData.vue';
 
 Vue.use(VueRouter)
 
@@ -14,10 +13,6 @@ Vue.config.productionTip = false
 const routes = [{
     path: "/",
     component: Todo,
-  },
-  {
-    path: "/YourTodo",
-    component: TodoData,
   },
 ]
 const router = new VueRouter({

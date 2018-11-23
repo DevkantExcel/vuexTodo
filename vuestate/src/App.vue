@@ -8,7 +8,7 @@
         </div>
       <ul class="nav navbar-nav">
         <!-- <li><router-link to="/Todo">Todo Form</router-link> <br /> </li> -->
-        <li><router-link to="/YourTodo">Your Todos</router-link> <br /> </li>
+        <!-- <li><router-link to="/YourTodo">Your Todos</router-link> <br /> </li> -->
       </ul>
       </div>
 </nav>
