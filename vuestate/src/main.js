@@ -5,19 +5,14 @@ import store from './store'
 
 import VueRouter from 'vue-router'
 import Todo from './components/Todo.vue';
-import TodoData from './components/TodoData.vue';
 
 Vue.use(VueRouter)
 
 Vue.config.productionTip = false
 // code for router 
 const routes = [{
-    path: "/Todo",
+    path: "/",
     component: Todo,
-  },
-  {
-    path: "/TodoData",
-    component: TodoData,
   },
 ]
 const router = new VueRouter({

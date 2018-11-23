@@ -81,97 +81,89 @@
       </v-container>
       
       <!-- table shifted to component TodoData -->
+
+      <!--******** table shifted from there to here ***********-->
+
+      <v-container class="customWidthSeventy" >
+        <v-layout>
+     <table v-show="showTodo.length" class="center" fixed>
+       <thead>
+         <tr>
+           <th></th>
+           <th>Item</th>
+           <th>Date</th>
+           <th>Time</th>
+           <th>Edit</th>
+           <th>Delete</th>
+         </tr>
+       </thead>
+       <tbody>
+         <tr v-for="(item, index) in listItems" :key="index" >
+           <td>
+             <v-checkbox 
+               color="success"
+               type="checkbox is-success is-small" 
+               v-model="item.active" 
+               @click.native="checkboxAlert(item, index)">
+            </v-checkbox>
+          </td>
+          <td v-bind:class="{strike : item.active}" style="word-wrap: break-word;">
+           {{ item.arrtodo }}
+          </td>
+          <td v-bind:class="{strike : item.active}">
+            {{ item.date }}
+          </td>
+          <td v-bind:class="{strike : item.active}">
+            {{ item.time }}
+          </td>
+          <td>
+            <v-btn @click="editThis(index, item)" round color="primary" dark>Edit</v-btn>
+          </td>
+          <td>
+            <v-btn @click="delThis(index)" round color="error" dark>Delete</v-btn>
+          </td>
+        </tr>
+      </tbody>
+     </table>
+     </v-layout>
+     </v-container>   
+
+      <!--******** table shifted from there to here ***********-->
    </v-app>
 </template>
  <script>
-import Vue from "vue";
 import { mapGetters, mapActions, mapState } from "vuex";
 export default {
   name: "Todo",
+  data: function() {
+    return {
+      message: "",
+      editIndex: null,
+      active: false,
+      arrIndex: 0,
+      sno: null,
+      time: new Date().toLocaleTimeString("en-US", {
+        hour12: false,
+        hour: "numeric",
+        minute: "numeric"
+      }),
+      menu2: false,
+      date: new Date().toISOString().substr(0, 10),
+      menu: false
+    };
+  },
   //data() moved to store.js & being called in computed property
   computed: {
     //****** mapGetters used to display array elements *******/
     ...mapGetters({ showTodo: "showTodoStore", showaddTodo: "showaddTodo" }),
     //**** v-model = 'message' ****/
-    message: {
-      set: function(val) {
-        this.$store.commit("updateMessage", val);
-      },
-      get: function() {
-        return this.showaddTodo.message;
-      }
-    },
-    active: {
-      set: function(val) {
-        this.$store.commit("updateactive", val);
-      },
-      get: function() {
-        return this.showaddTodo.active;
-      }
-    },
-    editIndex: {
-      set: function(val) {
-        this.$store.commit("updateIndex", val);
-      },
-      get: function() {
-        return this.showaddTodo.editIndex;
-      }
-    },
-    arrIndex: {
-      set: function(val) {
-        this.$store.commit("updatearrIndex", val);
-      },
-      get: function() {
-        return this.showaddTodo.arrIndex;
-      }
-    },
-    sno: {
-      set: function(val) {
-        this.$store.commit("updatesno", val);
-      },
-      get: function() {
-        return this.showaddTodo.sno;
-      }
-    },
     listItems() {
       return this.showTodo;
-    },
-    time: {
-      set: function(val) {
-        this.$store.commit("updateTime", val);
-      },
-      get: function() {
-        return this.showaddTodo.time;
-      }
-    },
-    menu2: {
-      set: function(val) {
-        this.$store.commit("updateMenu2", val);
-      },
-      get: function() {
-        return this.showaddTodo.menu2;
-      }
-    },
-    date: {
-      set: function(val) {
-        this.$store.commit("updatedate", val);
-      },
-      get: function() {
-        return this.showaddTodo.date;
-      }
-    },
-    menu: {
-      set: function(val) {
-        this.$store.commit("updatemenu", val);
-      },
-      get: function() {
-        return this.showaddTodo.menu;
-      }
     }
   },
   methods: {
     ...mapActions(["add", "delete", "edit", "checkbox"]),
-    ...mapState(["addTodo"]),
+    // ...mapState(["addTodo"]),
     addTodo: function() {
       // new logic
 
@@ -185,13 +177,40 @@ export default {
           this.date !== ""
         ) {
           this.add({
-            arrtodo: this.showaddTodo.message,
+            arrtodo: this.message,
             active: this.active,
             sno: this.arrIndex,
             time: this.time,
             date: this.date
           });
           this.arrIndex += 1;
+          this.message = null;
+          this.time = null;
+          this.date = null;
+        } else {
+          alert("please fill all the details i.e, item,date & time");
+        }
+      }
+      if (this.editIndex !== null) {
+        if (
+          this.editIndex !== null &&
+          this.message !== null &&
+          this.message !== "" &&
+          this.time !== null &&
+          this.time !== "" &&
+          this.date !== null &&
+          this.date !== ""
+        ) {
+          this.edit({
+            editIndex: this.editIndex,
+            arrtodo: this.message,
+            active: this.active,
+            sno: this.arrIndex,
+            time: this.time,
+            date: this.date
+          }),
+            (this.editIndex = null);
+          this.active = false;
           this.message = null;
           this.time = null;
           this.date = null;
@@ -252,7 +271,7 @@ export default {
         editIndex: index
       });
       // eslint-disable-next-line
-      Console.log(item, index, 'from checkbox')
+      Console.log(item, index, "from checkbox");
     },
     updateMessage(e) {
       this.$store.commit("updateMessage", e.target.value);
